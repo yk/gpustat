@@ -1,0 +1,60 @@
+<ion-header>
+  <ion-navbar color="whatsapp">
+    <ion-title>
+      GPU Stats
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content class="chats-page-content">
+    <h2>Machines</h2>
+        <div *ngFor="let fb of freebusys | async">
+            <h3>{{fb.entry.machine}}: {{fb.entry.totalfree}} GPUs free</h3>
+            <table>
+                <tr>
+                    <th>GPU</th>
+                    <th>User</th>
+                </tr>
+                <tr *ngFor="let d of fb.entry.details">
+                    <td>{{d.gid}}</td>
+                    <td>{{d.uid}}</td>
+                </tr>
+            </table>
+        </div>
+
+    <h2>Users</h2>
+    <ul>
+            <table>
+                <tr>
+                    <th>User</th>
+                    <th>Total Time</th>
+                    <th>Mean Usage</th>
+                </tr>
+                <tr *ngFor="let usg of usages | async">
+                    <td>{{usg._id}}</td>
+                    <td>{{usg.count / 60 | number:'1.1-1'}} hrs</td>
+                    <td>{{usg.meanperc / 100| percent}}</td>
+                </tr>
+            </table>
+    </ul>
+
+
+  <!--<ion-list class="chats">-->
+    <!--<ion-item-sliding *ngFor="let chat of chats | async">-->
+      <!--<button ion-item class="chat" (click)="showMessages(chat)">-->
+        <!--<img class="chat-picture" [src]="chat.picture">-->
+        <!--<div class="chat-info">-->
+          <!--<h2 class="chat-title">{{chat.title}}</h2>-->
+
+          <!--<span *ngIf="chat.lastMessage" class="last-message">-->
+            <!--<p *ngIf="chat.lastMessage.type == 'text'" class="last-message-content last-message-content-text">{{chat.lastMessage.content}}</p>-->
+            <!--<span class="last-message-timestamp">{{ chat.lastMessage.createdAt | amCalendar }}</span>-->
+          <!--</span>-->
+        <!--</div>-->
+      <!--</button>-->
+      <!--<ion-item-options class="chat-options">-->
+        <!--<button ion-button color="danger" class="option option-remove" (click)="removeChat(chat)">Remove</button>-->
+      <!--</ion-item-options>-->
+    <!--</ion-item-sliding>-->
+  <!--</ion-list>-->
+</ion-content>
