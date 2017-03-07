@@ -24,8 +24,8 @@ def get_stats():
     percs = [percre.findall(pb)[1] for pb in pblock if pb.startswith('|')]
     percs = [int(p[:-1]) for p in percs]
     ublock = ublock.split('+--')[0].split('\n')[1:-1]
-    pids = [u.split()[1:3] for u in ublock]
-    gids, pids = zip(*pids)
+    pids = [u.split()[1:3] for u in ublock if not ('No running' in u)]
+    gids, pids = zip(*pids) if len(pids) > 0 else ([], [])
 
     uids = [sh.ps('u', pid).split('\n')[1].split()[0] for pid in pids]
 
