@@ -23,6 +23,40 @@
         </div>
 
     <h2>Users</h2>
+
+    <h3>Last 24 Hours</h3>
+    <ul>
+            <table>
+                <tr>
+                    <th>User</th>
+                    <th>Total Time</th>
+                    <th>Mean Usage</th>
+                </tr>
+                <tr *ngFor="let usg of usages1d | async">
+                    <td>{{usg._id}}</td>
+                    <td>{{usg.count / 60 | number:'1.1-1'}} hrs</td>
+                    <td>{{usg.meanperc / 100| percent}}</td>
+                </tr>
+            </table>
+    </ul>
+    
+    <h3>Last 2 Weeks</h3>
+    <ul>
+            <table>
+                <tr>
+                    <th>User</th>
+                    <th>Total Time</th>
+                    <th>Mean Usage</th>
+                </tr>
+                <tr *ngFor="let usg of usages2w | async">
+                    <td>{{usg._id}}</td>
+                    <td>{{usg.count / 60 | number:'1.1-1'}} hrs</td>
+                    <td>{{usg.meanperc / 100| percent}}</td>
+                </tr>
+            </table>
+    </ul>
+
+    <h3>All Time</h3>
     <ul>
             <table>
                 <tr>

@@ -3,7 +3,7 @@ import { NavController, PopoverController, ModalController, AlertController } fr
 import { MeteorObservable } from 'meteor-rxjs';
 import * as Moment from 'moment';
 import { Observable, Subscriber } from 'rxjs';
-import { Usages, FreeBusys } from '../../../../imports/collections';
+import { Usages, Usages2w, Usages1d, FreeBusys } from '../../../../imports/collections';
 import { Usage, FreeBusy } from '../../../../imports/models';
 import template from './chats.html';
 //import { NewChatComponent } from './new-chat';
@@ -14,6 +14,8 @@ import * as _ from 'underscore';
 })
 export class ChatsPage implements OnInit {
   usages;
+    usages2w;
+    usages1d;
   freebusys;
 
   constructor(
@@ -28,6 +30,8 @@ export class ChatsPage implements OnInit {
       MeteorObservable.autorun().subscribe(() => {
         //this.usages = this.findUsages();
         this.usages = Usages.find({}, {sort: {'_id': 1}});
+        this.usages2w = Usages2w.find({}, {sort: {'_id': 1}});
+        this.usages1d = Usages1d.find({}, {sort: {'_id': 1}});
       });
     });
     MeteorObservable.subscribe('freebusy').subscribe(() => {
