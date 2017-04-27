@@ -30,10 +30,23 @@ export class ChatsPage implements OnInit {
       MeteorObservable.autorun().subscribe(() => {
         //this.usages = this.findUsages();
         this.usages = Usages.find({}, {sort: {'_id': 1}});
+      });
+    });
+
+    MeteorObservable.subscribe('usage2w').subscribe(() => {
+      MeteorObservable.autorun().subscribe(() => {
+        //this.usages = this.findUsages();
         this.usages2w = Usages2w.find({}, {sort: {'_id': 1}});
+      });
+    });
+
+    MeteorObservable.subscribe('usage1d').subscribe(() => {
+      MeteorObservable.autorun().subscribe(() => {
+        //this.usages = this.findUsages();
         this.usages1d = Usages1d.find({}, {sort: {'_id': 1}});
       });
     });
+
     MeteorObservable.subscribe('freebusy').subscribe(() => {
       MeteorObservable.autorun().subscribe(() => {
         //this.freebusys = this.findFreeBusys();
