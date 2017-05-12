@@ -1,3 +1,13 @@
 table * {
     padding: 0.5em;
 }
+
+#machines-container {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+
+    > div {
+        padding: 5em;
+    }
+}

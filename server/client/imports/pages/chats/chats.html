@@ -8,6 +8,7 @@
 
 <ion-content class="chats-page-content">
     <h2>Machines</h2>
+    <div id='machines-container'>
         <div *ngFor="let fb of freebusys | async">
             <h3>{{fb.entry.machine}}: {{fb.entry.totalfree}} GPUs free</h3>
             <table>
@@ -21,6 +22,7 @@
                 </tr>
             </table>
         </div>
+    </div>
 
     <h2>Users</h2>
 
