@@ -40,22 +40,28 @@ def get_nvidia_stats():
 
 
 def get_top_stats():
+    nproc = int(sh.nproc('--all'))
+    ctext = [l for l in sh.free().split('\n') if l.startswith('Mem:')][0]
+    tkns = [t for t in ctext.split() if len(t)]
+    mem_total, mem_used = map(int, tkns[1:3])
+
+    ctext = [l for l in sh.df().split('\n') if 'vg-root' in l][0]
+    tkns = [t for t in ctext.split() if len(t)]
+    hdd_used, hdd_avail = map(int, tkns[2:4])
+
     ctext = sh.top('-b', '-n1').split('\n')
     lavg = float(ctext[0].split('load average:')[1].strip().split()[0][:-1])
-    mem_line = ctext[3].split(':')[1].split('used')[0].strip()
-    mem_total = int(mem_line.split('+')[0])
-    mem_used = int(mem_line.split()[-1])
     ctext = ctext[7:]
     procs = []
     for line in ctext:
         line = [t for t in line.split() if len(t)]
         if len(line) != 12:
             continue
-        uid, cpu, mem, cmd = line[1], float(line[8]), float(line[9]), line[11]
+        pid, uid, cpu, mem, cmd = line[0], line[1], float(line[8]), float(line[9]), line[11]
         if cpu < 50 and mem < 5:
             continue
-        procs.append(dict(uid=uid, cpu=cpu, mem=mem, cmd=cmd))
-    return lavg, mem_total, mem_used, procs
+        procs.append(dict(pid=pid, uid=uid, cpu=cpu, mem=mem, cmd=cmd))
+    return nproc, lavg, mem_total, mem_used, hdd_avail, hdd_used, procs
 
 
 
@@ -69,11 +75,10 @@ with MongoClient(host=mongo_host, port=int(mongo_port)) as mongo_client:
             timestamp = time.time()
             free_gpus, entries = get_nvidia_stats()
             db.gpu.insert({'timestamp': timestamp, 'machine': gpustat_machine, 'totalfree': len(free_gpus), 'whichfree': free_gpus, 'details': entries})
-            lavg, mem_total, mem_used, procs = get_top_stats()
-            db.cpu.insert({'timestamp': timestamp, 'machine': gpustat_machine, 'load_avg': lavg, 'mem_total': mem_total, 'mem_used': mem_used, 'procs': procs})
+            nproc, lavg, mem_total, mem_used, hdd_avail, hdd_used, procs = get_top_stats()
+            db.cpu.insert({'timestamp': timestamp, 'machine': gpustat_machine, 'nproc': nproc, 'load_avg': lavg, 'mem_total': mem_total, 'mem_used': mem_used, 'hdd_avail': hdd_avail, 'hdd_used': hdd_used, 'procs': procs})
 
         except Exception as e:
             raise
             logging.warn(e)
-        break
         time.sleep(60)
