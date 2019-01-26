@@ -24,7 +24,7 @@ class StatsArea extends Component {
       <div>
         <h1>GPU Stats</h1>
         <MachineContainerDiv>
-          {machines.sort().map(m => 
+          {machines.sort(m => m._id).map(m => 
             <Machine machine={m._id} key={m._id}/>
           )}
         </MachineContainerDiv>
