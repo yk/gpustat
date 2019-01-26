@@ -77,6 +77,7 @@ with MongoClient(host=mongo_host, port=int(mongo_port)) as mongo_client:
             db.gpu.insert({'timestamp': timestamp, 'machine': gpustat_machine, 'totalfree': len(free_gpus), 'whichfree': free_gpus, 'details': entries})
             nproc, lavg, mem_total, mem_used, hdd_avail, hdd_used, procs = get_top_stats()
             db.cpu.insert({'timestamp': timestamp, 'machine': gpustat_machine, 'nproc': nproc, 'load_avg': lavg, 'mem_total': mem_total, 'mem_used': mem_used, 'hdd_avail': hdd_avail, 'hdd_used': hdd_used, 'procs': procs})
+            db.machines.update({'_id': gpustat_machine}, {'_id': gpustat_machine}, upsert=True)
 
         except Exception as e:
             raise
