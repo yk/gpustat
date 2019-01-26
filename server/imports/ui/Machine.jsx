@@ -3,7 +3,7 @@ import CpuStats from '/imports/api/CpuStats';
 import GpuStats from '/imports/api/GpuStats';
 import { withTracker } from 'meteor/react-meteor-data';
 import styled from 'styled-components';
-import moment from 'moment';
+import Moment from 'react-moment';
 
 class Machine extends Component {
   constructor(props) {
@@ -32,7 +32,7 @@ class Machine extends Component {
           <tbody>
             <tr>
               <td>Last update</td>
-              <td> {moment(Math.min(m.cpu.timestamp, m.gpu.timestamp)*1000).fromNow()}</td>
+              <td><Moment unix fromNow>{Math.round(Math.min(m.cpu.timestamp, m.gpu.timestamp))}</Moment></td>
             </tr>
             <tr>
               <td>Load</td>
