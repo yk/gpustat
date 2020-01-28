@@ -26,7 +26,7 @@ class Machine extends Component {
     if (loading || !cpuStats || !gpuStats) return <div>Loading...</div>;
 
     const timestamp = Math.round(Math.min(m.cpu.timestamp, m.gpu.timestamp));
-    const outdated = Date.now() - timestamp > 120;
+    const outdated = Date.now() / 1000 - timestamp > 120;
     const timeStyle = {};
 
     if(outdated){
