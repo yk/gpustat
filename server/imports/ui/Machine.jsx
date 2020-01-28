@@ -25,14 +25,23 @@ class Machine extends Component {
 
     if (loading || !cpuStats || !gpuStats) return <div>Loading...</div>;
 
+    const timestamp = Math.round(Math.min(m.cpu.timestamp, m.gpu.timestamp));
+    const outdated = Date.now() - timestamp > 120;
+    const timeStyle = {};
+
+    if(outdated){
+      timeStyle.color = 'red';
+      timeStyle.fontWeight = 'bolder';
+    }
+
     return (
       <MachineDiv>
         <h2>{m.name}: {m.gpu.totalfree} GPUs free</h2>
         <table>
           <tbody>
-            <tr>
+            <tr style={timeStyle}>
               <td>Last update</td>
-              <td><Moment unix fromNow>{Math.round(Math.min(m.cpu.timestamp, m.gpu.timestamp))}</Moment></td>
+              <td><Moment unix fromNow>{timestamp}</Moment></td>
             </tr>
             <tr>
               <td>Load</td>
